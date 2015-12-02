@@ -15,14 +15,14 @@ Resources:
 This library uses the Arduino Wire.h to complete I2C transactions.
 
 Development environment specifics:
-	IDE: Arduino 1.0.5
+	IDE: Arduino 1.6.3
 	Hardware Platform: Arduino Pro 3.3V/8MHz
 	MS5803 Breakout Version: 1.0
 	
-**Updated for Arduino 1.6.4 5/2015**
+Updated for Arduino 1.6.4 5/2015
+Added success/fail return to begin(), reset(), sendCommand() MDG 12/2015
 
-This code is beerware. If you see me (or any other SparkFun employee) at the
-local pub, and you've found our code helpful, please buy us a round!
+This code is beerware. If you see me (or any other SparkFun employee) at the local pub, and you've found our code helpful, please buy us a round!
 
 Distributed as-is; no warranty is given.
 ******************************************************************************/
@@ -37,19 +37,24 @@ MS5803::MS5803(ms5803_addr address)
 	_address = address; //set interface used for communication
 }
 
-void MS5803::reset(void)
+uint8_t MS5803::reset(void)
 // Reset device I2C
+// Returns 1 for success, 0 for failure
 {
-   sendCommand(CMD_RESET);
-   sensorWait(3);
+	if (sendCommand(CMD_RESET) != 0)
+		return 0;
+	sensorWait(3);
+		return 1;
 }
 
 uint8_t MS5803::begin(void)
 // Initialize library for subsequent pressure measurements
+// Returns 1 for success, 0 for failure
 {  
 	uint8_t i;
 	for(i = 0; i <= 7; i++){
-		sendCommand(CMD_PROM + (i * 2));
+		if (sendCommand(CMD_PROM + (i * 2)) != 0)
+			return 0;
 		Wire.requestFrom( _address, 2);
 		uint8_t highByte = Wire.read(); 
 		uint8_t lowByte = Wire.read();
@@ -60,8 +65,7 @@ uint8_t MS5803::begin(void)
 	//	Serial.print("= ");
 	//	Serial.println(coefficient[i]);
 	}
-
-	return 0;
+	return 1;
 }
 	
 float MS5803::getTemperature(temperature_units units, precision _precision)
@@ -193,12 +197,13 @@ uint32_t MS5803::getADCconversion(measurement _measurement, precision _precision
 
 }
 
-void MS5803::sendCommand(uint8_t command)
+uint8_t MS5803::sendCommand(uint8_t command)
+// Returns 0 for success, Wire library error code (>0) for failure
 {	
 	Wire.beginTransmission( _address);
 	Wire.write(command);
-	Wire.endTransmission();
-	
+	return Wire.endTransmission();
+	// returns 0 for success, > 1 for error
 }
 
 void MS5803::sensorWait(uint8_t time)

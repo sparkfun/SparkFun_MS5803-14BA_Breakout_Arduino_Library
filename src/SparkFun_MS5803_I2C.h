@@ -15,11 +15,12 @@ Resources:
 This library uses the Arduino Wire.h to complete I2C transactions.
 
 Development environment specifics:
-	IDE: Arduino 1.0.5
+	IDE: Arduino 1.6.3
 	Hardware Platform: Arduino Pro 3.3V/8MHz
 	MS5803 Breakout Version: 1.0
-
-**Updated for Arduino 1.6.4 5/2015**
+	
+Updated for Arduino 1.6.4 5/2015
+Added success/fail return to begin(), reset(), sendCommand() MDG 12/2015
 
 This code is beerware. If you see me (or any other SparkFun employee) at the
 local pub, and you've found our code helpful, please buy us a round!
@@ -75,8 +76,12 @@ class MS5803
 {
 	public:	
 		MS5803(ms5803_addr address); 
-		void reset(void);	 //Reset device
+
+		uint8_t reset(void); //Reset device
+		// Returns 1 for success, 0 for failure
+
 		uint8_t begin(void); // Collect coefficients from sensor
+		// Returns 1 for success, 0 for failure
 		
 		// Return calculated temperature from sensor
 		float getTemperature(temperature_units units, precision _precision);
@@ -84,7 +89,6 @@ class MS5803
 		float getPressure(precision _precision);
 
 	private:
-		
 		int32_t _temperature_actual;
 		int32_t _pressure_actual;
 	
@@ -93,7 +97,9 @@ class MS5803
 		
 		void getMeasurements(precision _precision);
 
-		void sendCommand(uint8_t command);	// General I2C send command function
+		uint8_t sendCommand(uint8_t command);	// General I2C send command function
+		// Returns 0 for success, Wire library error code (>0) for failure
+
 		uint32_t getADCconversion(measurement _measurement, precision _precision);	// Retrieve ADC result
 
 		void sensorWait(uint8_t time); // General delay function see: delay()
