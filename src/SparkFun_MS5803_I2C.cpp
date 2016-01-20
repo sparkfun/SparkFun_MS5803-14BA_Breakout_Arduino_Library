@@ -71,7 +71,7 @@ float MS5803::getTemperature(temperature_units units, precision _precision)
 	float temperature_reported;
 	// If Fahrenheit is selected return the temperature converted to F
 	if(units == FAHRENHEIT){
-		temperature_reported = _temperature_actual / 100;
+		temperature_reported = _temperature_actual / 100.;
 		temperature_reported = (((temperature_reported) * 9) / 5) + 32;
 		return temperature_reported;
 		}
