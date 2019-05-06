@@ -1,7 +1,7 @@
 SparkFun Pressure Sensor Breakout - MS5803-14BA Arduino Library
 ===============================================================
 
-![SparkFun Pressure Sensor Breakout - MS5803-14BA](https://cdn.sparkfun.com//assets/parts/9/8/1/1/12909-01a.jpg)
+[![SparkFun Pressure Sensor Breakout - MS5803-14BA](https://cdn.sparkfun.com//assets/parts/9/8/1/1/12909-01a.jpg)](https://www.sparkfun.com/products/12909)
 
 [*SparkFun Pressure Sensor Breakout - MS5803-14BA (SEN-12909)*](https://www.sparkfun.com/products/12909)
 
@@ -30,8 +30,9 @@ Products that use this Library
 Version History
 ---------------
 
-* [V_1.1.0](https://github.com/sparkfun/SparkFun_MS5803-14BA_Breakout_Arduino_Library/releases/tag/V_1.1.0) - Initial Arduino library manager version
+* [V_1.1.2](https://github.com/sparkfun/SparkFun_MS5803-14BA_Breakout_Arduino_Library/releases/tag/V_1.1.2) - Fix issue with initializing I2C Bus on SAMD21, ESP8266
 * [V_1.1.1](https://github.com/sparkfun/SparkFun_MS5803-14BA_Breakout_Arduino_Library/releases/tag/V_1.1.1) - Fixes a few integer math bugs in previous version
+* [V_1.1.0](https://github.com/sparkfun/SparkFun_MS5803-14BA_Breakout_Arduino_Library/releases/tag/V_1.1.0) - Initial Arduino library manager version
 
 License Information
 -------------------

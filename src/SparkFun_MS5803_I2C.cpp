@@ -19,7 +19,7 @@ Development environment specifics:
 	Hardware Platform: Arduino Pro 3.3V/8MHz
 	MS5803 Breakout Version: 1.0
 	
-**Updated for Arduino 1.6.4 5/2015**
+**Updated for Arduino 1.8.8 5/2019**
 
 This code is beerware. If you see me (or any other SparkFun employee) at the
 local pub, and you've found our code helpful, please buy us a round!
@@ -33,7 +33,6 @@ Distributed as-is; no warranty is given.
 MS5803::MS5803(ms5803_addr address)
 // Base library type I2C
 {
-	Wire.begin(); // Arduino Wire library initializer
 	_address = address; //set interface used for communication
 }
 
