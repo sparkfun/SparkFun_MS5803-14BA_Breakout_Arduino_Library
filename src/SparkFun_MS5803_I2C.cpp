@@ -93,12 +93,12 @@ float MS5803::getTemperature(temperature_units units, precision _precision)
 }
 
 float MS5803::getPressure(precision _precision)
-// Return a pressure reading units: 0.1mbar
+// Return a pressure reading
 {
 	getMeasurements(_precision);
 	float pressure_reported;
-	pressure_reported = _pressure_actual;
-	pressure_reported = pressure_reported / 10.0f;
+	pressure_reported = _pressure_actual; // Units: 0.1mbar
+	pressure_reported = pressure_reported / 10.0f; // Convert to mbar (float)
 	return pressure_reported;
 }
 
