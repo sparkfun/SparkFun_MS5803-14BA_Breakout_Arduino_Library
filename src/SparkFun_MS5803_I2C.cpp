@@ -57,9 +57,9 @@ uint8_t MS5803::begin(TwoWire &wirePort)
 	for(i = 0; i <= 7; i++)
 	{
 		sendCommand(CMD_PROM + (i * 2));
-		_i2cPort.requestFrom( _address, (uint8_t)2);
-		uint8_t highByte = _i2cPort.read(); 
-		uint8_t lowByte = _i2cPort.read();
+		_i2cPort->requestFrom( _address, (uint8_t)2);
+		uint8_t highByte = _i2cPort->read(); 
+		uint8_t lowByte = _i2cPort->read();
 		coefficient[i] = (highByte << 8)|lowByte;
 	// Uncomment below for debugging output.
 	//	Serial.print("C");
@@ -187,13 +187,13 @@ uint32_t MS5803::getADCconversion(measurement _measurement, precision _precision
 	}	
 	
 	sendCommand(CMD_ADC_READ);
-	_i2cPort.requestFrom(_address, (uint8_t)3);
+	_i2cPort->requestFrom(_address, (uint8_t)3);
 	
-	while(_i2cPort.available())    
+	while(_i2cPort->available())    
 	{ 
-		highByte = _i2cPort.read();
-		midByte = _i2cPort.read();
-		lowByte = _i2cPort.read();	
+		highByte = _i2cPort->read();
+		midByte = _i2cPort->read();
+		lowByte = _i2cPort->read();	
 	}
 	
 	result = ((uint32_t)highByte << 16) | ((uint32_t)midByte << 8) | lowByte;
@@ -204,9 +204,9 @@ uint32_t MS5803::getADCconversion(measurement _measurement, precision _precision
 
 void MS5803::sendCommand(uint8_t command)
 {	
-	_i2cPort.beginTransmission( _address);
-	_i2cPort.write(command);
-	_i2cPort.endTransmission();
+	_i2cPort->beginTransmission( _address);
+	_i2cPort->write(command);
+	_i2cPort->endTransmission();
 	
 }
 
