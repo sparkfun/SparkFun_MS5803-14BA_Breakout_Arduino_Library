@@ -35,8 +35,8 @@
 
 //  ADDRESS_HIGH = 0x76
 //  ADDRESS_LOW  = 0x77
-
-MS5803 sensor(ADDRESS_HIGH);
+MS5803 sensor(ADDRESS_HIGH); // Instantiate the sensor using ADDRESS_HIGH
+//MS5803 sensor; // Or, from v1.1.3, we can also do this. The address will default to ADDRESS_HIGH
 
 //Create variables to store results
 float temperature_c, temperature_f;
@@ -46,13 +46,19 @@ double pressure_abs, pressure_relative, altitude_delta, pressure_baseline;
 double base_altitude = 1655.0; // Altitude of SparkFun's HQ in Boulder, CO. in (m)
 
 void setup() {
+
   // Start your preferred I2C object
   Wire.begin();
+
   //Initialize Serial Monitor
   Serial.begin(9600);
+
   //Retrieve calibration constants for conversion math.
   sensor.reset();
-  sensor.begin();
+
+  // Begin communication with the sensor
+  sensor.begin(); // Begin the sensor using Wire
+  //sensor.begin(Wire, 0x76); // Or, from v1.1.3, we can also do this
 
   pressure_baseline = sensor.getPressure(ADC_4096);
 
