@@ -31,6 +31,7 @@ Distributed as-is; no warranty is given.
 #define SparkFun_MS5803_I2C_h
 
 #include <Arduino.h>
+#include "Wire.h"
 
 // Define units for conversions. 
 enum temperature_units
@@ -74,9 +75,10 @@ enum ms5803_addr
 class MS5803
 {
 	public:	
-		MS5803(ms5803_addr address); 
+		MS5803(ms5803_addr address = ADDRESS_HIGH); 
 		void reset(void);	 //Reset device
-		uint8_t begin(void); // Collect coefficients from sensor
+		uint8_t begin(TwoWire &wirePort = Wire); // Collect coefficients from sensor
+		uint8_t begin(TwoWire &wirePort, uint8_t address); // Collect coefficients from sensor
 		
 		// Return calculated temperature from sensor
 		float getTemperature(temperature_units units, precision _precision);
@@ -88,7 +90,8 @@ class MS5803
 		int32_t _temperature_actual;
 		int32_t _pressure_actual;
 	
-		ms5803_addr _address; 		// Variable used to store I2C device address.
+		TwoWire *_i2cPort; // The generic connection to user's chosen I2C hardware
+		uint8_t _address;  // Variable used to store I2C device address.
 		uint16_t coefficient[8];// Coefficients;
 		
 		void getMeasurements(precision _precision);

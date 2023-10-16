@@ -30,6 +30,7 @@ Products that use this Library
 Version History
 ---------------
 
+* [v1.1.3](https://github.com/sparkfun/SparkFun_MS5803-14BA_Breakout_Arduino_Library/releases/tag/v1.1.3) - Add TwoWire as begin parameter
 * [V_1.1.2](https://github.com/sparkfun/SparkFun_MS5803-14BA_Breakout_Arduino_Library/releases/tag/V_1.1.2) - Fix issue with initializing I2C Bus on SAMD21, ESP8266
 * [V_1.1.1](https://github.com/sparkfun/SparkFun_MS5803-14BA_Breakout_Arduino_Library/releases/tag/V_1.1.1) - Fixes a few integer math bugs in previous version
 * [V_1.1.0](https://github.com/sparkfun/SparkFun_MS5803-14BA_Breakout_Arduino_Library/releases/tag/V_1.1.0) - Initial Arduino library manager version

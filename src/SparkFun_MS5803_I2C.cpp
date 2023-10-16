@@ -27,13 +27,12 @@ local pub, and you've found our code helpful, please buy us a round!
 Distributed as-is; no warranty is given.
 ******************************************************************************/
 
-#include <Wire.h> // Wire library is used for I2C
 #include "SparkFun_MS5803_I2C.h"
 
 MS5803::MS5803(ms5803_addr address)
 // Base library type I2C
 {
-	_address = address; //set interface used for communication
+	_address = (uint8_t)address; //set interface used for communication
 }
 
 void MS5803::reset(void)
@@ -43,16 +42,24 @@ void MS5803::reset(void)
    sensorWait(3);
 }
 
-uint8_t MS5803::begin(void)
+uint8_t MS5803::begin(TwoWire &wirePort, uint8_t address)
+{
+	_address = (uint8_t)address; //set interface used for communication
+	return begin(wirePort);
+}
+
+uint8_t MS5803::begin(TwoWire &wirePort)
 // Initialize library for subsequent pressure measurements
 {  
+	_i2cPort = &wirePort; //Grab which port the user wants us to use
+
 	uint8_t i;
 	for(i = 0; i <= 7; i++)
-  {
+	{
 		sendCommand(CMD_PROM + (i * 2));
-		Wire.requestFrom( _address, 2);
-		uint8_t highByte = Wire.read(); 
-		uint8_t lowByte = Wire.read();
+		_i2cPort.requestFrom( _address, (uint8_t)2);
+		uint8_t highByte = _i2cPort.read(); 
+		uint8_t lowByte = _i2cPort.read();
 		coefficient[i] = (highByte << 8)|lowByte;
 	// Uncomment below for debugging output.
 	//	Serial.print("C");
@@ -180,16 +187,16 @@ uint32_t MS5803::getADCconversion(measurement _measurement, precision _precision
 	}	
 	
 	sendCommand(CMD_ADC_READ);
-	Wire.requestFrom(_address, 3);
+	_i2cPort.requestFrom(_address, (uint8_t)3);
 	
-	while(Wire.available())    
+	while(_i2cPort.available())    
 	{ 
-		highByte = Wire.read();
-		midByte = Wire.read();
-		lowByte = Wire.read();	
+		highByte = _i2cPort.read();
+		midByte = _i2cPort.read();
+		lowByte = _i2cPort.read();	
 	}
 	
-	result = ((uint32_t)highByte << 16) + ((uint32_t)midByte << 8) + lowByte;
+	result = ((uint32_t)highByte << 16) | ((uint32_t)midByte << 8) | lowByte;
 
 	return result;
 
@@ -197,9 +204,9 @@ uint32_t MS5803::getADCconversion(measurement _measurement, precision _precision
 
 void MS5803::sendCommand(uint8_t command)
 {	
-	Wire.beginTransmission( _address);
-	Wire.write(command);
-	Wire.endTransmission();
+	_i2cPort.beginTransmission( _address);
+	_i2cPort.write(command);
+	_i2cPort.endTransmission();
 	
 }
 
