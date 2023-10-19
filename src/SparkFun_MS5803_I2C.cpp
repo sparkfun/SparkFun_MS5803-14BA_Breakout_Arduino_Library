@@ -38,6 +38,8 @@ MS5803::MS5803(ms5803_addr address)
 void MS5803::reset(void)
 // Reset device I2C
 {
+	if (_i2cPort == nullptr)
+		return;
 
 	sendCommand(CMD_RESET);
 	sensorWait(3);
@@ -45,7 +47,7 @@ void MS5803::reset(void)
 
 uint8_t MS5803::begin(TwoWire &wirePort, uint8_t address)
 {
-	_address = (uint8_t)address; // set interface used for communication
+	_address = address; // set interface used for communication
 	return begin(wirePort);
 }
 
@@ -53,6 +55,8 @@ uint8_t MS5803::begin(TwoWire &wirePort)
 // Initialize library for subsequent pressure measurements
 {
 	_i2cPort = &wirePort; // Grab which port the user wants us to use
+
+	reset(); // Reset the sensor to ensure the coefficients are loaded correctly
 
 	uint8_t i;
 	for (i = 0; i <= 7; i++)
@@ -168,6 +172,9 @@ uint32_t MS5803::getADCconversion(measurement _measurement, precision _precision
 // Retrieve ADC measurement from the device.
 // Select measurement type and precision
 {
+	if (_i2cPort == nullptr)
+		return 0;
+		
 	uint32_t result;
 	uint8_t highByte = 0, midByte = 0, lowByte = 0;
 
@@ -210,6 +217,9 @@ uint32_t MS5803::getADCconversion(measurement _measurement, precision _precision
 
 void MS5803::sendCommand(uint8_t command)
 {
+	if (_i2cPort == nullptr)
+		return;
+		
 	_i2cPort->beginTransmission(_address);
 	_i2cPort->write(command);
 	_i2cPort->endTransmission();

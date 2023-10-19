@@ -88,9 +88,9 @@ private:
 	int32_t _temperature_actual;
 	int32_t _pressure_actual;
 
-	TwoWire *_i2cPort;		 // The generic connection to user's chosen I2C hardware
-	uint8_t _address;		 // Variable used to store I2C device address.
-	uint16_t coefficient[8]; // Coefficients;
+	TwoWire *_i2cPort = nullptr; // The generic connection to user's chosen I2C hardware
+	uint8_t _address;			 // Variable used to store I2C device address.
+	uint16_t coefficient[8];	 // Coefficients;
 
 	void getMeasurements(precision _precision);
 
