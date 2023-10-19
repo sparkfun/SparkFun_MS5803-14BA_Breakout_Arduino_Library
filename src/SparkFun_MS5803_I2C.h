@@ -21,8 +21,7 @@ Development environment specifics:
 
 **Updated for Arduino 1.6.4 5/2015**
 
-This code is beerware. If you see me (or any other SparkFun employee) at the
-local pub, and you've found our code helpful, please buy us a round!
+License: Please see LICENSE.md for more details.
 
 Distributed as-is; no warranty is given.
 ******************************************************************************/
